@@ -7,6 +7,8 @@ public class Departamentos {
         Scanner scanner = new Scanner(System.in);
         System.out.println("*****DEPARTAMENTOS*****");
 
+        Select();
+
         System.out.println("Deseas registrar un funcionario?: ");
         String register = scanner.nextLine();
 
@@ -33,12 +35,18 @@ public class Departamentos {
 
                     if (newcharge.equals("")) {
                         System.out.println("No se encontró un departamento para este cargo");
+
                     } else {
 
                         System.out.print("Ingrese el nombre del funcionario: ");
                         String name = scanner.nextLine();
 
-                        Insert(document, charge, name);
+                        if (name.equals("")) {
+                            System.out.println("Este campo es obligatorio");
+                        }else {
+
+                            Insert(document, charge, name);
+                        }
                     }
                 }else{
                     System.out.println("Ya se encuentra un funcionario con este documento");
@@ -48,6 +56,29 @@ public class Departamentos {
             }
             }
         }
+
+    private static void Select() throws ClassNotFoundException, SQLException {
+
+        String driver2 = "com.mysql.cj.jdbc.Driver";
+        String url2 = "jdbc:mysql://localhost:3306/departamentos";
+        String username2 = "root";
+        String pass2 = "";
+
+        Class.forName(driver2);
+        Connection connection2 = DriverManager.getConnection(url2, username2, pass2);
+
+        Statement statement2 = connection2.createStatement();
+
+        ResultSet resultSet2 = statement2.executeQuery("SELECT * FROM departamento");
+
+        while(resultSet2.next()){
+
+            String codigo = resultSet2.getString("codigo");
+            String nombre = resultSet2.getString("nombre");
+
+            System.out.println("Estos son los nombres de los departamentos: " + nombre);
+        }
+    }
 
     private static String Select_bd(String document) throws ClassNotFoundException, SQLException {
 
